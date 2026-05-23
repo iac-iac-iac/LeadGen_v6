@@ -157,6 +157,9 @@ public partial class ProcessingViewModel : ObservableObject
                 {
                     // ignore save errors after processing
                 }
+
+                await UiDispatcher.RunOnUiThreadAsync(() =>
+                    _main.Dashboard.RefreshCommand.Execute(null));
             });
         }
         catch (Exception ex)

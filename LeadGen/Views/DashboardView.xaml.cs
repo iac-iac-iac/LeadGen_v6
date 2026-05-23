@@ -23,14 +23,7 @@ public partial class DashboardView : UserControl
 
     vm.Initialize();
 
-    if (ActivityPlotView.Model is null && vm.ActivityChart is not null)
-      ActivityPlotView.Model = vm.ActivityChart;
-  }
-
-  private void OnUnloaded(object sender, RoutedEventArgs e)
-  {
-    // Снимаем модель при уходе с вкладки — иначе OxyPlot не даст привязать её снова.
-    ActivityPlotView.Model = null;
+    ApplyChartModel(vm);
   }
 
   private void OnDataContextChanged(object sender, DependencyPropertyChangedEventArgs e)
@@ -59,6 +52,19 @@ public partial class DashboardView : UserControl
       case nameof(DashboardViewModel.LinkSessions):
         AnimationHelper.ScalePulse(StatSessionsCard);
         break;
+      case nameof(DashboardViewModel.ActivityChart):
+        if (_vm is not null)
+          ApplyChartModel(_vm);
+        break;
     }
+  }
+
+  private void ApplyChartModel(DashboardViewModel vm)
+  {
+    if (vm.ActivityChart is null)
+      return;
+
+    ActivityPlotView.Model = vm.ActivityChart;
+    ActivityPlotView.InvalidatePlot(true);
   }
 }

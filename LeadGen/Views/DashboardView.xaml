@@ -3,8 +3,7 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:oxy="http://oxyplot.org/wpf"
              xmlns:helpers="clr-namespace:LeadGen.Helpers"
-             Loaded="OnLoaded"
-             Unloaded="OnUnloaded">
+             Loaded="OnLoaded">
     <ScrollViewer VerticalScrollBarVisibility="Auto" Padding="0,4,0,32">
         <StackPanel MaxWidth="1280">
 

@@ -5,6 +5,7 @@
         xmlns:views="clr-namespace:LeadGen.Views"
         xmlns:vm="clr-namespace:LeadGen.ViewModels"
         xmlns:controls="clr-namespace:LeadGen.Controls"
+        xmlns:svgc="http://sharpvectors.codeplex.com/svgc/"
         Title="LeadGen" Height="900" Width="1400" MinHeight="720" MinWidth="1100"
         Icon="Assets/app.ico"
         WindowStartupLocation="CenterScreen"
@@ -163,17 +164,9 @@
                     </Grid.ColumnDefinitions>
 
                     <StackPanel Grid.Column="0" Orientation="Horizontal" VerticalAlignment="Center">
-                        <Border Width="40" Height="40" CornerRadius="12" Margin="0,0,14,0"
-                                BorderBrush="#608B6CFF" BorderThickness="1">
-                            <Border.Background>
-                                <LinearGradientBrush StartPoint="0,0" EndPoint="1,1">
-                                    <GradientStop Color="#8B6CFF" Offset="0"/>
-                                    <GradientStop Color="#2EE8D6" Offset="1"/>
-                                </LinearGradientBrush>
-                            </Border.Background>
-                            <TextBlock Text="LG" FontWeight="Bold" FontSize="16" Foreground="White"
-                                       HorizontalAlignment="Center" VerticalAlignment="Center"/>
-                        </Border>
+                        <Viewbox Width="44" Height="44" Margin="0,0,14,0" VerticalAlignment="Center">
+                            <svgc:SvgViewbox Source="pack://application:,,,/Assets/app-icon.svg" Stretch="Uniform"/>
+                        </Viewbox>
                         <StackPanel VerticalAlignment="Center">
                             <TextBlock Text="LeadGen" FontSize="18" FontWeight="Bold"
                                        Foreground="{StaticResource TextPrimaryBrush}"/>

@@ -81,6 +81,9 @@ public static class DashboardChartBuilder
         model.Series.Add(CreateArea("Ссылки", LineLinks, points, p => p.LinksGenerated));
         model.Series.Add(CreateLine("Файлы", LineFiles, points, p => (double)p.FilesProcessed));
 
+        model.ResetAllAxes();
+        model.InvalidatePlot(true);
+
         return model;
     }
 

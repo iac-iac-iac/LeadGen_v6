@@ -90,8 +90,8 @@
         </Grid>
 
         <!-- ФАЗА 2: Векторный логотип (SVG) и вспышка -->
-        <Grid x:Name="LogoContainer" HorizontalAlignment="Center" VerticalAlignment="Center" Width="220" Height="220" IsHitTestVisible="False" Margin="0,-80,0,0">
-            <Ellipse x:Name="LogoGlow" Width="180" Height="180" Opacity="0" HorizontalAlignment="Center" VerticalAlignment="Center">
+        <Grid x:Name="LogoContainer" HorizontalAlignment="Center" VerticalAlignment="Center" Width="320" Height="320" IsHitTestVisible="False" Margin="0,-100,0,0">
+            <Ellipse x:Name="LogoGlow" Width="280" Height="280" Opacity="0" HorizontalAlignment="Center" VerticalAlignment="Center">
                 <Ellipse.Fill>
                     <RadialGradientBrush>
                         <GradientStop Color="#902EE8D6" Offset="0"/>
@@ -100,7 +100,7 @@
                 </Ellipse.Fill>
             </Ellipse>
 
-            <Viewbox x:Name="IntroLogoHost" Width="168" Height="168" Opacity="0"
+            <Viewbox x:Name="IntroLogoHost" Width="280" Height="280" Opacity="0"
                      HorizontalAlignment="Center" VerticalAlignment="Center"
                      RenderTransformOrigin="0.5,0.5">
                 <Viewbox.RenderTransform>

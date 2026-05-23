@@ -101,6 +101,12 @@ public partial class MainViewModel : ObservableObject
         _animationsEnabled = Config.Ui.AnimationsEnabled;
     }
 
+    partial void OnCurrentPageChanged(AppPage value)
+    {
+        if (value == AppPage.Dashboard)
+            Dashboard.RefreshCommand.Execute(null);
+    }
+
     partial void OnAnimationsEnabledChanged(bool value)
     {
         Config.Ui.AnimationsEnabled = value;

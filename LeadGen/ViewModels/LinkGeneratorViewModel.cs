@@ -228,6 +228,7 @@ public partial class LinkGeneratorViewModel : ObservableObject
                         links.Select(l => $"{l.Region}: {l.Link}"));
                     LinksCount = links.Count;
                     StatusMessage = $"Сгенерировано {links.Count} ссылок для «{segment}»";
+                    _main.Dashboard.RefreshCommand.Execute(null);
                 });
             });
         }
