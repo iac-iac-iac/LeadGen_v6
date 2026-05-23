@@ -166,7 +166,7 @@ public partial class IntroOverlay : UserControl
         var logoBorderFade = new DoubleAnimationUsingKeyFrames();
         logoBorderFade.KeyFrames.Add(new DiscreteDoubleKeyFrame(0, KeyTime.FromTimeSpan(TimeSpan.FromMilliseconds(1100))));
         logoBorderFade.KeyFrames.Add(new EasingDoubleKeyFrame(1, KeyTime.FromTimeSpan(TimeSpan.FromMilliseconds(1600)), easeOut));
-        Storyboard.SetTarget(logoBorderFade, LogoBorder);
+        Storyboard.SetTarget(logoBorderFade, IntroLogoHost);
         Storyboard.SetTargetProperty(logoBorderFade, new PropertyPath(OpacityProperty));
         _mainStoryboard.Children.Add(logoBorderFade);
 

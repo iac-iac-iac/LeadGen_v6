@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" role="img" aria-label="LeadGen v6">
+  <defs>
+    <linearGradient id="tile" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#1A4FD4"/>
+      <stop offset="50%" stop-color="#1239A8"/>
+      <stop offset="100%" stop-color="#0B256E"/>
+    </linearGradient>
+    <linearGradient id="funnel" x1="30%" y1="0%" x2="70%" y2="100%">
+      <stop offset="0%" stop-color="#7FE8FF"/>
+      <stop offset="45%" stop-color="#3BC8F0"/>
+      <stop offset="100%" stop-color="#1A8FD4"/>
+    </linearGradient>
+    <linearGradient id="ring" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" stop-color="#5ED4FF" stop-opacity="0.2"/>
+      <stop offset="50%" stop-color="#FFFFFF" stop-opacity="0.85"/>
+      <stop offset="100%" stop-color="#5ED4FF" stop-opacity="0.2"/>
+    </linearGradient>
+    <filter id="glow" x="-30%" y="-30%" width="160%" height="160%">
+      <feDropShadow dx="0" dy="8" stdDeviation="12" flood-color="#2EE8D6" flood-opacity="0.35"/>
+    </filter>
+  </defs>
+
+  <!-- Скруглённый тайл (без внешней белой подложки — прозрачный фон SVG) -->
+  <rect width="512" height="512" rx="112" fill="url(#tile)"/>
+
+  <!-- Верхнее свечение -->
+  <ellipse cx="256" cy="120" rx="180" ry="90" fill="#FFFFFF" opacity="0.08"/>
+
+  <!-- Силуэты людей -->
+  <g fill="#FFFFFF" opacity="0.95">
+    <circle cx="256" cy="168" r="28"/>
+    <path d="M 220 198 Q 256 188 292 198 L 292 248 Q 256 238 220 248 Z"/>
+  </g>
+  <g fill="#5ED4FF" opacity="0.9">
+    <circle cx="196" cy="176" r="20"/>
+    <path d="M 172 200 Q 196 192 220 200 L 220 238 Q 196 230 172 238 Z"/>
+    <circle cx="316" cy="176" r="20"/>
+    <path d="M 292 200 Q 316 192 340 200 L 340 238 Q 316 230 292 238 Z"/>
+  </g>
+
+  <!-- Воронка -->
+  <g filter="url(#glow)">
+    <ellipse cx="256" cy="248" rx="118" ry="22" fill="url(#ring)"/>
+    <path fill="url(#funnel)"
+          d="M 148 252
+             L 364 252
+             L 308 360
+             Q 256 392 204 360
+             Z"/>
+    <ellipse cx="256" cy="252" rx="118" ry="22" fill="none" stroke="#B8F4FF" stroke-width="4" opacity="0.55"/>
+    <ellipse cx="256" cy="292" rx="92" ry="14" fill="none" stroke="#FFFFFF" stroke-width="3" opacity="0.25"/>
+    <ellipse cx="256" cy="328" rx="66" ry="10" fill="none" stroke="#FFFFFF" stroke-width="2" opacity="0.18"/>
+  </g>
+
+  <!-- v6 -->
+  <g transform="translate(330 118)">
+    <text font-family="Segoe UI, Arial, sans-serif" font-size="34" font-weight="700" fill="#5ED4FF">v</text>
+    <text x="22" font-family="Segoe UI, Arial, sans-serif" font-size="44" font-weight="800" fill="#FFFFFF">6</text>
+  </g>
+
+  <!-- LeadGen -->
+  <text x="256" y="438"
+        text-anchor="middle"
+        font-family="Segoe UI, Arial, sans-serif"
+        font-size="54"
+        font-weight="800"
+        letter-spacing="1">
+    <tspan fill="#FFFFFF">Lead</tspan><tspan fill="#5ED4FF">Gen</tspan>
+  </text>
+</svg>

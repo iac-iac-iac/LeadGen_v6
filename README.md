@@ -1,5 +1,9 @@
 <div align="center">
 
+<img src="LeadGen/Assets/app-icon-512.png" alt="LeadGen v6" width="180" height="180"/>
+
+<br/><br/>
+
 # LeadGen v6
 
 **Десктопная система лидогенерации для холодных продаж**
@@ -84,9 +88,20 @@ dotnet run --project LeadGen
 # Очистка старых артефактов
 Remove-Item -Recurse -Force LeadGen\bin, LeadGen\obj, LeadGen.Tests\bin, LeadGen.Tests\obj, publish -ErrorAction SilentlyContinue
 
+# Прозрачный app.ico из PNG (для exe и панели задач)
+dotnet run --project tools/IconGen
+
 # Сборка и публикация (win-x64)
 dotnet publish LeadGen/LeadGen.csproj -c Release -r win-x64 -o publish/win-x64
 ```
+
+### Брендинг
+
+| Файл | Использование |
+|------|----------------|
+| `LeadGen/Assets/app-icon-512.png` | README, GitHub, превью |
+| `LeadGen/Assets/app-icon.svg` | Интро при запуске приложения |
+| `LeadGen/Assets/app.ico` | Иконка `.exe` и окна (генерируется из PNG) |
 
 ---
 

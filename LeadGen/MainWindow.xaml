@@ -6,6 +6,7 @@
         xmlns:vm="clr-namespace:LeadGen.ViewModels"
         xmlns:controls="clr-namespace:LeadGen.Controls"
         Title="LeadGen" Height="900" Width="1400" MinHeight="720" MinWidth="1100"
+        Icon="Assets/app.ico"
         WindowStartupLocation="CenterScreen"
         WindowStyle="None"
         Background="{StaticResource AppBackgroundBrush}"
