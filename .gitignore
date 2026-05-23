@@ -1,0 +1,36 @@
+## Build
+[Bb]in/
+[Oo]bj/
+publish/
+*.slnx
+debug-*.log
+[Dd]ebug/
+[Rr]elease/
+
+## Visual Studio / Rider
+.vs/
+.idea/
+*.user
+*.suo
+*.userosscache
+*.sln.docstates
+
+## Test / coverage
+TestResults/
+*.trx
+coverage/
+*.coverage
+*.coveragexml
+
+## IDE / local
+.cursor/
+.vscode/
+
+## OS
+.DS_Store
+Thumbs.db
+
+## App runtime data (created locally)
+**/data/*.db
+**/data/input/**
+**/data/output/**

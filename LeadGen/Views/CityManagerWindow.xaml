@@ -1,0 +1,171 @@
+<Window x:Class="LeadGen.Views.CityManagerWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="Управление городами и районами"
+        Width="860" Height="620" MinWidth="480" MinHeight="420"
+        WindowStartupLocation="CenterOwner"
+        SizeChanged="OnWindowSizeChanged"
+        Background="{StaticResource AppBackgroundBrush}"
+        FontFamily="{StaticResource AppFont}">
+
+    <Grid x:Name="RootGrid" Margin="20" RenderTransformOrigin="0.5,0.5" Opacity="0">
+        <Grid.RenderTransform>
+            <ScaleTransform x:Name="RootScale" ScaleX="0.9" ScaleY="0.9"/>
+        </Grid.RenderTransform>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
+
+        <TextBlock Grid.Row="0" Text="Управление городами и районами"
+                   FontSize="20" FontWeight="Bold"
+                   Foreground="{StaticResource TextPrimaryBrush}" Margin="0,0,0,16"/>
+
+        <Grid x:Name="PanelsGrid" Grid.Row="1">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="*"/>
+                <RowDefinition Height="12"/>
+                <RowDefinition Height="Auto"/>
+            </Grid.RowDefinitions>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="16"/>
+                <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
+
+            <!-- Города -->
+            <Border x:Name="CitiesPanel" Grid.Row="0" Grid.Column="0"
+                    Style="{StaticResource DialogCard}" Padding="16" MinWidth="280">
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="*"/>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                    </Grid.RowDefinitions>
+
+                    <TextBlock Grid.Row="0" Text="Города" FontSize="16" FontWeight="SemiBold"
+                               Foreground="{StaticResource AccentPrimaryBrush}" Margin="0,0,0,10"/>
+
+                    <ListBox x:Name="CitiesList" Grid.Row="1" MinHeight="100"
+                             Style="{StaticResource DarkListBox}"
+                             ItemsSource="{Binding Cities}"
+                             SelectedItem="{Binding SelectedCity}"
+                             Margin="0,0,0,12">
+                        <ListBox.ItemTemplate>
+                            <DataTemplate>
+                                <CheckBox Content="{Binding DisplayName}"
+                                          IsChecked="{Binding IsSelected, Mode=TwoWay}"
+                                          Foreground="{StaticResource TextPrimaryBrush}" Margin="0"/>
+                            </DataTemplate>
+                        </ListBox.ItemTemplate>
+                    </ListBox>
+
+                    <StackPanel Grid.Row="2" Margin="0,0,0,8">
+                        <TextBlock Text="Добавить город" FontSize="12"
+                                   Foreground="{StaticResource TextSecondaryBrush}" Margin="0,0,0,6"/>
+                        <TextBox Style="{StaticResource ModernTextBox}" Margin="0,0,0,6"
+                                 Text="{Binding NewCityName, UpdateSourceTrigger=PropertyChanged}"/>
+                        <TextBox Style="{StaticResource ModernTextBox}" Margin="0,0,0,8"
+                                 Text="{Binding NewCityTimezone, UpdateSourceTrigger=PropertyChanged}"/>
+                        <Button Style="{StaticResource SecondaryButton}" Content="➕ Добавить город"
+                                Command="{Binding AddCityCommand}" HorizontalAlignment="Stretch"/>
+                    </StackPanel>
+
+                    <StackPanel Grid.Row="3" Margin="0,0,0,8">
+                        <TextBlock Text="Изменить UTC выбранного города" FontSize="12"
+                                   Foreground="{StaticResource TextSecondaryBrush}" Margin="0,0,0,6"/>
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="8"/>
+                                <ColumnDefinition Width="Auto"/>
+                            </Grid.ColumnDefinitions>
+                            <TextBox Grid.Column="0" Style="{StaticResource ModernTextBox}"
+                                     Text="{Binding EditCityTimezone, UpdateSourceTrigger=PropertyChanged}"/>
+                            <Button Grid.Column="2" Style="{StaticResource SecondaryButton}" Content="Сохранить UTC"
+                                    Command="{Binding UpdateTimezoneCommand}"/>
+                        </Grid>
+                    </StackPanel>
+
+                    <WrapPanel Grid.Row="4" Orientation="Horizontal">
+                        <Button Style="{StaticResource DangerButton}" Content="🗑 Удалить отмеченные"
+                                Command="{Binding DeleteSelectedCitiesCommand}" Margin="0,0,8,8"/>
+                        <Button Style="{StaticResource SecondaryButton}" Content="↺ Восстановить список"
+                                Command="{Binding RestoreDefaultsCommand}" Margin="0,0,0,8"/>
+                    </WrapPanel>
+                </Grid>
+            </Border>
+
+            <!-- Районы -->
+            <Border x:Name="DistrictsPanel" Grid.Row="0" Grid.Column="2"
+                    Style="{StaticResource DialogCard}" Padding="16" MinWidth="280">
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="*"/>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                    </Grid.RowDefinitions>
+
+                    <TextBlock Grid.Row="0" Text="Районы" FontSize="16" FontWeight="SemiBold"
+                               Foreground="{StaticResource AccentPrimaryBrush}" Margin="0,0,0,6"/>
+                    <TextBlock Grid.Row="1" FontSize="12" Foreground="{StaticResource TextSecondaryBrush}" Margin="0,0,0,8"
+                               Text="{Binding SelectedCity.Name, StringFormat='Город: {0}', FallbackValue='Город: — не выбран —'}"
+                               FontWeight="SemiBold"/>
+
+                    <ListBox x:Name="DistrictsList" Grid.Row="2" MinHeight="100"
+                             Style="{StaticResource DarkListBox}"
+                             ItemsSource="{Binding Districts}"
+                             SelectionMode="Extended"
+                             Margin="0,0,0,12">
+                        <ListBox.ItemTemplate>
+                            <DataTemplate>
+                                <TextBlock Text="{Binding}"
+                                           Foreground="{StaticResource TextPrimaryBrush}"
+                                           TextWrapping="Wrap"/>
+                            </DataTemplate>
+                        </ListBox.ItemTemplate>
+                    </ListBox>
+
+                    <StackPanel Grid.Row="3" Margin="0,0,0,8">
+                        <TextBox Style="{StaticResource ModernTextBox}" Margin="0,0,0,8"
+                                 Text="{Binding NewDistrictName, UpdateSourceTrigger=PropertyChanged}"/>
+                        <Button Style="{StaticResource SecondaryButton}" Content="➕ Добавить район"
+                                Command="{Binding AddDistrictCommand}" HorizontalAlignment="Stretch"/>
+                    </StackPanel>
+
+                    <Button Grid.Row="4" Style="{StaticResource DangerButton}"
+                            Content="🗑 Удалить выбранные районы"
+                            Click="OnDeleteDistrictsClick"
+                            HorizontalAlignment="Stretch"/>
+                </Grid>
+            </Border>
+        </Grid>
+
+        <TextBlock Grid.Row="2" Text="{Binding StatusMessage}" Margin="0,10,0,0" FontSize="12"
+                   TextWrapping="Wrap">
+            <TextBlock.Style>
+                <Style TargetType="TextBlock">
+                    <Setter Property="Foreground" Value="{StaticResource AccentSecondaryBrush}"/>
+                    <Style.Triggers>
+                        <DataTrigger Binding="{Binding IsErrorStatus}" Value="True">
+                            <Setter Property="Foreground" Value="#FF6B9D"/>
+                        </DataTrigger>
+                    </Style.Triggers>
+                </Style>
+            </TextBlock.Style>
+        </TextBlock>
+
+        <WrapPanel Grid.Row="3" HorizontalAlignment="Right" Margin="0,12,0,0">
+            <Button Style="{StaticResource SecondaryButton}" Content="Отмена"
+                    Command="{Binding CancelCommand}" Margin="0,0,8,8" MinWidth="100"/>
+            <Button Style="{StaticResource PrimaryButton}" Content="Сохранить"
+                    Command="{Binding SaveCommand}" MinWidth="120" Margin="0,0,0,8"/>
+        </WrapPanel>
+    </Grid>
+</Window>

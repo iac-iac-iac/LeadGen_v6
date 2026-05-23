@@ -1,0 +1,200 @@
+<UserControl x:Class="LeadGen.Controls.LoadingOverlay"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             Visibility="Collapsed">
+    <Grid x:Name="Backdrop" Background="#CC06070D" Opacity="0">
+        <Border x:Name="OverlayCard" Style="{StaticResource PremiumGlassCard}" HorizontalAlignment="Center" VerticalAlignment="Center"
+                MinWidth="350" Padding="36,32" BorderBrush="#408B6CFF">
+            <Grid>
+                <!-- Обычный простой спиннер (когда IsPremiumLoading == False) -->
+                <StackPanel x:Name="NormalLoader" HorizontalAlignment="Center">
+                    <StackPanel.Style>
+                        <Style TargetType="StackPanel">
+                            <Setter Property="Visibility" Value="Visible"/>
+                            <Style.Triggers>
+                                <DataTrigger Binding="{Binding IsPremiumLoading}" Value="True">
+                                    <Setter Property="Visibility" Value="Collapsed"/>
+                                </DataTrigger>
+                            </Style.Triggers>
+                        </Style>
+                    </StackPanel.Style>
+
+                    <Grid Width="56" Height="56" Margin="0,0,0,24">
+                        <Ellipse Width="56" Height="56" Stroke="#258B6CFF" StrokeThickness="3" Fill="Transparent"/>
+                        <Ellipse Width="56" Height="56" StrokeThickness="3" Fill="Transparent"
+                                 Stroke="{StaticResource AccentGradientBrush}"
+                                 StrokeDashArray="3 2" RenderTransformOrigin="0.5,0.5">
+                            <Ellipse.RenderTransform>
+                                <RotateTransform x:Name="SpinnerRotate"/>
+                            </Ellipse.RenderTransform>
+                            <Ellipse.Triggers>
+                                <EventTrigger RoutedEvent="Loaded">
+                                    <BeginStoryboard>
+                                        <Storyboard RepeatBehavior="Forever">
+                                            <DoubleAnimation Storyboard.TargetName="SpinnerRotate"
+                                                             Storyboard.TargetProperty="Angle"
+                                                             From="0" To="360" Duration="0:0:1"/>
+                                        </Storyboard>
+                                    </BeginStoryboard>
+                                </EventTrigger>
+                            </Ellipse.Triggers>
+                        </Ellipse>
+                    </Grid>
+                    <TextBlock x:Name="MessageText" Text="Загрузка..."
+                               Foreground="{StaticResource TextPrimaryBrush}"
+                               FontSize="15" FontWeight="SemiBold" HorizontalAlignment="Center"/>
+                    <TextBlock Text="LeadGen обрабатывает данные..." FontSize="11"
+                               Foreground="{StaticResource TextMutedBrush}"
+                               HorizontalAlignment="Center" Margin="0,6,0,0"/>
+                    
+                    <Border Height="4" Width="220" CornerRadius="2" Margin="0,20,0,0"
+                            Background="#12FFFFFF" ClipToBounds="True">
+                        <Border Width="70" Height="4" CornerRadius="2"
+                                Background="{StaticResource AccentGradientBrush}"
+                                HorizontalAlignment="Left">
+                            <Border.RenderTransform>
+                                <TranslateTransform x:Name="ShimmerMove"/>
+                            </Border.RenderTransform>
+                            <Border.Triggers>
+                                <EventTrigger RoutedEvent="Loaded">
+                                    <BeginStoryboard>
+                                        <Storyboard RepeatBehavior="Forever">
+                                            <DoubleAnimation Storyboard.TargetName="ShimmerMove"
+                                                             Storyboard.TargetProperty="X"
+                                                             From="-70" To="220" Duration="0:0:1.2"/>
+                                        </Storyboard>
+                                    </BeginStoryboard>
+                                </EventTrigger>
+                            </Border.Triggers>
+                        </Border>
+                    </Border>
+                </StackPanel>
+
+                <!-- Премиальный мультистадийный гироскоп "Cognitive Core" (когда IsPremiumLoading == True) -->
+                <StackPanel x:Name="PremiumLoader" HorizontalAlignment="Center">
+                    <StackPanel.Style>
+                        <Style TargetType="StackPanel">
+                            <Setter Property="Visibility" Value="Collapsed"/>
+                            <Style.Triggers>
+                                <DataTrigger Binding="{Binding IsPremiumLoading}" Value="True">
+                                    <Setter Property="Visibility" Value="Visible"/>
+                                </DataTrigger>
+                            </Style.Triggers>
+                        </Style>
+                    </StackPanel.Style>
+
+                    <!-- Двухорбитальный гироскоп с процентами -->
+                    <Grid Width="130" Height="130" Margin="0,0,0,24" HorizontalAlignment="Center">
+                        <!-- Внешняя фиолетовая орбита -->
+                        <Ellipse Width="130" Height="130" Stroke="#158B6CFF" StrokeThickness="1.5" Fill="Transparent"/>
+                        <Ellipse Width="130" Height="130" StrokeThickness="2" Fill="Transparent"
+                                 Stroke="#858B6CFF"
+                                 StrokeDashArray="8 6" RenderTransformOrigin="0.5,0.5">
+                            <Ellipse.RenderTransform>
+                                <RotateTransform x:Name="OuterRingRotate"/>
+                            </Ellipse.RenderTransform>
+                            <Ellipse.Triggers>
+                                <EventTrigger RoutedEvent="Loaded">
+                                    <BeginStoryboard>
+                                        <Storyboard RepeatBehavior="Forever">
+                                            <DoubleAnimation Storyboard.TargetName="OuterRingRotate"
+                                                             Storyboard.TargetProperty="Angle"
+                                                             From="0" To="360" Duration="0:0:5"/>
+                                        </Storyboard>
+                                    </BeginStoryboard>
+                                </EventTrigger>
+                            </Ellipse.Triggers>
+                        </Ellipse>
+
+                        <!-- Внутренняя бирюзовая орбита (с упругим шагом вращения) -->
+                        <Ellipse Width="104" Height="104" Stroke="#152EE8D6" StrokeThickness="1" Fill="Transparent" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                        <Ellipse Width="104" Height="104" StrokeThickness="2.5" Fill="Transparent" HorizontalAlignment="Center" VerticalAlignment="Center"
+                                 Stroke="#D02EE8D6"
+                                 StrokeDashArray="4 2 2 2" RenderTransformOrigin="0.5,0.5">
+                            <Ellipse.RenderTransform>
+                                <RotateTransform x:Name="InnerRingRotate"/>
+                            </Ellipse.RenderTransform>
+                            <Ellipse.Triggers>
+                                <EventTrigger RoutedEvent="Loaded">
+                                    <BeginStoryboard>
+                                        <Storyboard RepeatBehavior="Forever">
+                                            <DoubleAnimationUsingKeyFrames Storyboard.TargetName="InnerRingRotate" Storyboard.TargetProperty="Angle">
+                                                <EasingDoubleKeyFrame KeyTime="0:0:0" Value="0"/>
+                                                <EasingDoubleKeyFrame KeyTime="0:0:1" Value="-90">
+                                                    <EasingDoubleKeyFrame.EasingFunction>
+                                                        <CubicEase EasingMode="EaseInOut"/>
+                                                    </EasingDoubleKeyFrame.EasingFunction>
+                                                </EasingDoubleKeyFrame>
+                                                <EasingDoubleKeyFrame KeyTime="0:0:1.3" Value="-80">
+                                                    <EasingDoubleKeyFrame.EasingFunction>
+                                                        <BackEase EasingMode="EaseOut" Amplitude="0.6"/>
+                                                    </EasingDoubleKeyFrame.EasingFunction>
+                                                </EasingDoubleKeyFrame>
+                                                <EasingDoubleKeyFrame KeyTime="0:0:2.3" Value="-270">
+                                                    <EasingDoubleKeyFrame.EasingFunction>
+                                                        <CubicEase EasingMode="EaseInOut"/>
+                                                    </EasingDoubleKeyFrame.EasingFunction>
+                                                </EasingDoubleKeyFrame>
+                                                <EasingDoubleKeyFrame KeyTime="0:0:2.6" Value="-260">
+                                                    <EasingDoubleKeyFrame.EasingFunction>
+                                                        <BackEase EasingMode="EaseOut" Amplitude="0.6"/>
+                                                    </EasingDoubleKeyFrame.EasingFunction>
+                                                </EasingDoubleKeyFrame>
+                                                <EasingDoubleKeyFrame KeyTime="0:0:3.6" Value="-360">
+                                                    <EasingDoubleKeyFrame.EasingFunction>
+                                                        <CubicEase EasingMode="EaseInOut"/>
+                                                    </EasingDoubleKeyFrame.EasingFunction>
+                                                </EasingDoubleKeyFrame>
+                                            </DoubleAnimationUsingKeyFrames>
+                                        </Storyboard>
+                                    </BeginStoryboard>
+                                </EventTrigger>
+                            </Ellipse.Triggers>
+                        </Ellipse>
+
+                        <!-- Цифровой счетчик прогресса по центру гироскопа -->
+                        <StackPanel VerticalAlignment="Center" HorizontalAlignment="Center">
+                            <TextBlock Text="{Binding LoadingProgress, StringFormat={}{0:0}%}"
+                                       Foreground="{StaticResource TextPrimaryBrush}"
+                                       FontFamily="{StaticResource MonoFont}"
+                                       FontSize="24" FontWeight="Bold"
+                                       HorizontalAlignment="Center">
+                                <TextBlock.Effect>
+                                    <DropShadowEffect Color="#2EE8D6" BlurRadius="12" ShadowDepth="0" Opacity="0.4"/>
+                                </TextBlock.Effect>
+                            </TextBlock>
+                            <TextBlock Text="C O G N I T I V E" FontSize="8" FontWeight="SemiBold"
+                                       Foreground="{StaticResource TextSecondaryBrush}"
+                                       HorizontalAlignment="Center" Margin="0,2,0,0" Opacity="0.7"/>
+                        </StackPanel>
+                    </Grid>
+
+                    <!-- Текстовый заголовок операции -->
+                    <TextBlock x:Name="PremiumTitleText" Text="А Н А Л И З   И   О Б Р А Б О Т К А   Д А Н Н Ы Х"
+                               Foreground="{StaticResource TextSecondaryBrush}"
+                               FontSize="9" FontWeight="Bold" HorizontalAlignment="Center"/>
+
+                    <!-- Каскадный микро-лог текущей стадии -->
+                    <Grid Height="34" Margin="0,10,0,0">
+                        <TextBlock x:Name="PremiumStageText" Text="{Binding LoadingStageText}"
+                                   Foreground="{StaticResource TextPrimaryBrush}"
+                                   FontSize="13" FontWeight="SemiBold" HorizontalAlignment="Center" VerticalAlignment="Center"
+                                   TextAlignment="Center" TextWrapping="Wrap" MaxWidth="320">
+                            <TextBlock.RenderTransform>
+                                <TranslateTransform x:Name="StageTextTrans" Y="0"/>
+                            </TextBlock.RenderTransform>
+                        </TextBlock>
+                    </Grid>
+
+                    <!-- Премиальный непрерывный прогресс-бар -->
+                    <Border Height="4" Width="260" CornerRadius="2" Margin="0,16,0,0"
+                            Background="#08FFFFFF" ClipToBounds="True">
+                        <Border x:Name="PremiumProgressBar" Width="0" Height="4" CornerRadius="2"
+                                Background="{StaticResource AccentGradientBrush}"
+                                HorizontalAlignment="Left"/>
+                    </Border>
+                </StackPanel>
+            </Grid>
+        </Border>
+    </Grid>
+</UserControl>

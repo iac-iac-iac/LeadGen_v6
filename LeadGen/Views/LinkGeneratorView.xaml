@@ -1,0 +1,193 @@
+<UserControl x:Class="LeadGen.Views.LinkGeneratorView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:helpers="clr-namespace:LeadGen.Helpers"
+             Loaded="OnLoaded">
+    <Grid MaxWidth="1280">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+
+        <Grid Grid.Row="0" Margin="0,0,0,28"
+              helpers:Animation.StaggerIndex="0"
+              helpers:Animation.Entrance="BlurReveal">
+            <StackPanel>
+                <TextBlock Style="{StaticResource PageTitle}" Text="Генератор ссылок"/>
+                <TextBlock Style="{StaticResource PageSubtitle}"
+                           Text="Яндекс.Карты · сегмент + город + UTC"/>
+            </StackPanel>
+            <Border Style="{StaticResource StatusPill}" HorizontalAlignment="Right" VerticalAlignment="Top">
+                <TextBlock Text="{Binding LinksCount, StringFormat='{}{0} ссылок готово'}"
+                           FontSize="11" Foreground="{StaticResource AccentSecondaryBrush}"/>
+            </Border>
+        </Grid>
+
+        <Grid Grid.Row="1">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="20"/>
+                <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
+
+            <!-- Левая колонка: сегмент + результаты -->
+            <Border Grid.Column="0" Style="{StaticResource PremiumGlassCard}" ClipToBounds="True"
+                    helpers:Animation.StaggerIndex="1"
+                    helpers:Animation.Entrance="SlideLeft">
+                <Grid>
+                    <Ellipse Width="180" Height="180" HorizontalAlignment="Right" VerticalAlignment="Bottom"
+                             Margin="0,0,-50,-50" Fill="#102EE8D6"/>
+                    <Grid>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="*"/>
+                            <RowDefinition Height="Auto"/>
+                        </Grid.RowDefinitions>
+
+                        <TextBlock Grid.Row="0" Text="Сегмент (поисковый запрос)" FontSize="13" FontWeight="SemiBold"
+                                   Foreground="{StaticResource TextPrimaryBrush}" Margin="0,0,0,8"/>
+                        <TextBox Grid.Row="1" Style="{StaticResource ModernTextBox}"
+                                 Text="{Binding Segment, UpdateSourceTrigger=PropertyChanged}"
+                                 Margin="0,0,0,16"/>
+
+                        <!-- Панель действий -->
+                        <Grid Grid.Row="2" Margin="0,0,0,16">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="12"/>
+                                <ColumnDefinition Width="Auto"/>
+                            </Grid.ColumnDefinitions>
+                            <Button Grid.Column="0" Style="{StaticResource PrimaryButton}"
+                                    Content="Сгенерировать" HorizontalAlignment="Stretch"
+                                    Command="{Binding GenerateLinksCommand}"/>
+                            <Button Grid.Column="2" Style="{StaticResource SecondaryButton}"
+                                    Content="Копировать" Padding="20,12"
+                                    Command="{Binding CopyLinksCommand}"
+                                    IsEnabled="{Binding CanCopyLinks}"/>
+                        </Grid>
+
+                        <Border Grid.Row="3" Background="#08FFFFFF" CornerRadius="12"
+                                BorderBrush="#25252B3D" BorderThickness="1" Margin="0,0,0,12">
+                            <Grid>
+                                <ScrollViewer VerticalScrollBarVisibility="Auto" Padding="14"
+                                              Visibility="{Binding LinksCount, Converter={StaticResource CountToVisibilityConverter}}">
+                                    <TextBox Text="{Binding ResultsText, Mode=OneWay}" IsReadOnly="True"
+                                             FontFamily="{StaticResource MonoFont}" FontSize="11"
+                                             Background="Transparent" Foreground="{StaticResource TextPrimaryBrush}"
+                                             BorderThickness="0" TextWrapping="Wrap"/>
+                                </ScrollViewer>
+                                <StackPanel VerticalAlignment="Center" HorizontalAlignment="Center" Margin="24"
+                                            Visibility="{Binding LinksCount, Converter={StaticResource ZeroToVisibleConverter}}">
+                                    <TextBlock Text="Результаты появятся здесь" FontSize="14" FontWeight="SemiBold"
+                                               Foreground="{StaticResource TextSecondaryBrush}"
+                                               HorizontalAlignment="Center"/>
+                                    <TextBlock Text="Введите сегмент, выберите города и нажмите «Сгенерировать»"
+                                               FontSize="12" Foreground="{StaticResource TextMutedBrush}"
+                                               HorizontalAlignment="Center" Margin="0,6,0,0" TextAlignment="Center"/>
+                                </StackPanel>
+                            </Grid>
+                        </Border>
+
+                        <TextBlock Grid.Row="4" Text="{Binding StatusMessage}" TextWrapping="Wrap"
+                                   Foreground="{StaticResource TextMutedBrush}" FontSize="12"/>
+                    </Grid>
+                </Grid>
+            </Border>
+
+            <!-- Правая колонка: города -->
+            <Border Grid.Column="2" Style="{StaticResource PremiumGlassCard}" ClipToBounds="True"
+                    helpers:Animation.StaggerIndex="2"
+                    helpers:Animation.Entrance="SlideRight">
+                <Grid>
+                    <Ellipse Width="160" Height="160" HorizontalAlignment="Right" VerticalAlignment="Top"
+                             Margin="0,-40,-40,0" Fill="#108B6CFF"/>
+                    <Grid>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="*"/>
+                        </Grid.RowDefinitions>
+
+                        <!-- Заголовок + управление -->
+                        <Grid Grid.Row="0" Margin="0,0,0,14">
+                            <StackPanel VerticalAlignment="Center">
+                                <TextBlock Style="{StaticResource SectionTitle}" Text="Города"/>
+                                <TextBlock Text="{Binding CoverageSummary}" FontSize="11"
+                                           Foreground="{StaticResource TextMutedBrush}" Margin="0,4,0,0"/>
+                            </StackPanel>
+                            <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" VerticalAlignment="Top">
+                                <Button Style="{StaticResource SecondaryButton}" Content="Управление" Padding="10,6" FontSize="11"
+                                        Command="{Binding OpenCityManagerCommand}" Margin="0,0,6,0"/>
+                                <Button Style="{StaticResource SecondaryButton}" Content="Все" Padding="10,6" FontSize="11"
+                                        Command="{Binding SelectAllCitiesCommand}" Margin="0,0,6,0"/>
+                                <Button Style="{StaticResource SecondaryButton}" Content="Снять" Padding="10,6" FontSize="11"
+                                        Command="{Binding DeselectAllCitiesCommand}"/>
+                            </StackPanel>
+                        </Grid>
+
+                        <!-- Поиск -->
+                        <TextBlock Grid.Row="1" Text="Поиск города" FontSize="11"
+                                   Foreground="{StaticResource TextMutedBrush}" Margin="0,0,0,6"/>
+                        <TextBox Grid.Row="2" Style="{StaticResource ModernTextBox}"
+                                 Text="{Binding CityFilter, UpdateSourceTrigger=PropertyChanged}"
+                                 Margin="0,0,0,12"/>
+
+                        <!-- Районы + счётчик -->
+                        <Grid Grid.Row="3" Margin="0,0,0,12">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="Auto"/>
+                            </Grid.ColumnDefinitions>
+                            <CheckBox Grid.Column="0" Style="{StaticResource PremiumCheckBox}"
+                                      Content="Учитывать районы (Москва, СПб)"
+                                      IsChecked="{Binding IncludeDistricts}"/>
+                            <Border Grid.Column="1" Style="{StaticResource StatusPill}" Padding="10,4" Margin="8,0,0,0">
+                                <TextBlock Text="{Binding SelectedCitiesCount, StringFormat='{}{0} выбрано'}"
+                                           FontSize="11" Foreground="{StaticResource TextSecondaryBrush}"/>
+                            </Border>
+                        </Grid>
+
+                        <!-- Список городов -->
+                        <ScrollViewer Grid.Row="4" VerticalScrollBarVisibility="Auto">
+                            <Border Background="#06FFFFFF" CornerRadius="12" Padding="8"
+                                    BorderBrush="#20252B3D" BorderThickness="1">
+                                <ItemsControl x:Name="CitiesList" ItemsSource="{Binding CitiesView}">
+                                    <ItemsControl.ItemTemplate>
+                                        <DataTemplate>
+                                            <Border Style="{StaticResource CitySelectRow}">
+                                                <CheckBox Style="{StaticResource PremiumCheckBox}"
+                                                          IsChecked="{Binding IsSelected, Mode=TwoWay}"
+                                                          HorizontalContentAlignment="Stretch">
+                                                    <Grid>
+                                                        <Grid.ColumnDefinitions>
+                                                            <ColumnDefinition Width="*"/>
+                                                            <ColumnDefinition Width="Auto"/>
+                                                        </Grid.ColumnDefinitions>
+                                                        <TextBlock Grid.Column="0" Text="{Binding Name}"
+                                                                   FontSize="13" FontWeight="SemiBold"
+                                                                   Foreground="{StaticResource TextPrimaryBrush}"
+                                                                   VerticalAlignment="Center"/>
+                                                        <Border Grid.Column="1" Background="#122EE8D6"
+                                                                BorderBrush="#302EE8D6" BorderThickness="1"
+                                                                CornerRadius="6" Padding="7,3" Margin="8,0,0,0">
+                                                            <TextBlock Text="{Binding Timezone}" FontSize="10"
+                                                                       FontWeight="SemiBold" Foreground="#7EEADB"/>
+                                                        </Border>
+                                                    </Grid>
+                                                </CheckBox>
+                                            </Border>
+                                        </DataTemplate>
+                                    </ItemsControl.ItemTemplate>
+                                </ItemsControl>
+                            </Border>
+                        </ScrollViewer>
+                    </Grid>
+                </Grid>
+            </Border>
+        </Grid>
+    </Grid>
+</UserControl>

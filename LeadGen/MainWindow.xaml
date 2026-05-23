@@ -1,0 +1,268 @@
+﻿<Window x:Class="LeadGen.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:shell="clr-namespace:System.Windows.Shell;assembly=PresentationFramework"
+        xmlns:views="clr-namespace:LeadGen.Views"
+        xmlns:vm="clr-namespace:LeadGen.ViewModels"
+        xmlns:controls="clr-namespace:LeadGen.Controls"
+        Title="LeadGen" Height="900" Width="1400" MinHeight="720" MinWidth="1100"
+        WindowStartupLocation="CenterScreen"
+        WindowStyle="None"
+        Background="{StaticResource AppBackgroundBrush}"
+        FontFamily="{StaticResource AppFont}">
+
+    <WindowChrome.WindowChrome>
+        <WindowChrome CaptionHeight="68"
+                      ResizeBorderThickness="6"
+                      GlassFrameThickness="0"
+                      CornerRadius="0"
+                      UseAeroCaptionButtons="False"/>
+    </WindowChrome.WindowChrome>
+
+    <Window.Resources>
+        <DataTemplate DataType="{x:Type vm:DashboardViewModel}">
+            <views:DashboardView/>
+        </DataTemplate>
+        <DataTemplate DataType="{x:Type vm:ProcessingViewModel}">
+            <views:ProcessingView/>
+        </DataTemplate>
+        <DataTemplate DataType="{x:Type vm:LinkGeneratorViewModel}">
+            <views:LinkGeneratorView/>
+        </DataTemplate>
+    </Window.Resources>
+
+    <Grid>
+        <Grid IsHitTestVisible="False" ClipToBounds="True">
+            <!-- Медленно дрейфующие Premium Aurora Orbs -->
+            <Ellipse Width="520" Height="520" HorizontalAlignment="Left" VerticalAlignment="Top"
+                     Margin="-120,-80,0,0" Fill="{StaticResource AuroraOrbPurpleBrush}" Opacity="0.55">
+                <Ellipse.RenderTransform>
+                    <TranslateTransform x:Name="PurpleOrbTransform" X="0" Y="0"/>
+                </Ellipse.RenderTransform>
+                <Ellipse.Triggers>
+                    <EventTrigger RoutedEvent="Loaded">
+                        <BeginStoryboard>
+                            <Storyboard RepeatBehavior="Forever" AutoReverse="True">
+                                <DoubleAnimation Storyboard.TargetName="PurpleOrbTransform"
+                                                 Storyboard.TargetProperty="X"
+                                                 From="-35" To="25" Duration="0:0:16">
+                                    <DoubleAnimation.EasingFunction>
+                                        <SineEase EasingMode="EaseInOut"/>
+                                    </DoubleAnimation.EasingFunction>
+                                </DoubleAnimation>
+                                <DoubleAnimation Storyboard.TargetName="PurpleOrbTransform"
+                                                 Storyboard.TargetProperty="Y"
+                                                 From="-20" To="30" Duration="0:0:13">
+                                    <DoubleAnimation.EasingFunction>
+                                        <SineEase EasingMode="EaseInOut"/>
+                                    </DoubleAnimation.EasingFunction>
+                                </DoubleAnimation>
+                            </Storyboard>
+                        </BeginStoryboard>
+                    </EventTrigger>
+                </Ellipse.Triggers>
+            </Ellipse>
+
+            <Ellipse Width="480" Height="480" HorizontalAlignment="Right" VerticalAlignment="Top"
+                     Margin="0,40,-100,0" Fill="{StaticResource AuroraOrbTealBrush}" Opacity="0.45">
+                <Ellipse.RenderTransform>
+                    <TranslateTransform x:Name="TealOrbTransform" X="0" Y="0"/>
+                </Ellipse.RenderTransform>
+                <Ellipse.Triggers>
+                    <EventTrigger RoutedEvent="Loaded">
+                        <BeginStoryboard>
+                            <Storyboard RepeatBehavior="Forever" AutoReverse="True">
+                                <DoubleAnimation Storyboard.TargetName="TealOrbTransform"
+                                                 Storyboard.TargetProperty="X"
+                                                 From="25" To="-35" Duration="0:0:22">
+                                    <DoubleAnimation.EasingFunction>
+                                        <SineEase EasingMode="EaseInOut"/>
+                                    </DoubleAnimation.EasingFunction>
+                                </DoubleAnimation>
+                                <DoubleAnimation Storyboard.TargetName="TealOrbTransform"
+                                                 Storyboard.TargetProperty="Y"
+                                                 From="-30" To="20" Duration="0:0:17">
+                                    <DoubleAnimation.EasingFunction>
+                                        <SineEase EasingMode="EaseInOut"/>
+                                    </DoubleAnimation.EasingFunction>
+                                </DoubleAnimation>
+                            </Storyboard>
+                        </BeginStoryboard>
+                    </EventTrigger>
+                </Ellipse.Triggers>
+            </Ellipse>
+
+            <Ellipse Width="360" Height="360" HorizontalAlignment="Right" VerticalAlignment="Bottom"
+                     Margin="0,0,80,-80" Fill="{StaticResource AuroraOrbPinkBrush}" Opacity="0.35">
+                <Ellipse.RenderTransform>
+                    <TranslateTransform x:Name="PinkOrbTransform" X="0" Y="0"/>
+                </Ellipse.RenderTransform>
+                <Ellipse.Triggers>
+                    <EventTrigger RoutedEvent="Loaded">
+                        <BeginStoryboard>
+                            <Storyboard RepeatBehavior="Forever" AutoReverse="True">
+                                <DoubleAnimation Storyboard.TargetName="PinkOrbTransform"
+                                                 Storyboard.TargetProperty="X"
+                                                 From="-20" To="35" Duration="0:0:19">
+                                    <DoubleAnimation.EasingFunction>
+                                        <SineEase EasingMode="EaseInOut"/>
+                                    </DoubleAnimation.EasingFunction>
+                                </DoubleAnimation>
+                                <DoubleAnimation Storyboard.TargetName="PinkOrbTransform"
+                                                 Storyboard.TargetProperty="Y"
+                                                 From="30" To="-25" Duration="0:0:24">
+                                    <DoubleAnimation.EasingFunction>
+                                        <SineEase EasingMode="EaseInOut"/>
+                                    </DoubleAnimation.EasingFunction>
+                                </DoubleAnimation>
+                            </Storyboard>
+                        </BeginStoryboard>
+                    </EventTrigger>
+                </Ellipse.Triggers>
+            </Ellipse>
+
+            <!-- Tech dot-grid (параллакс поверх Aurora) -->
+            <Border IsHitTestVisible="False" Opacity="0.35">
+                <Border.Background>
+                    <VisualBrush TileMode="Tile"
+                                 Viewport="0,0,16,16" ViewportUnits="Absolute"
+                                 Viewbox="0,0,16,16" ViewboxUnits="Absolute">
+                        <VisualBrush.Visual>
+                            <Grid Width="16" Height="16">
+                                <Ellipse Width="1.2" Height="1.2"
+                                         Fill="#22FFFFFF"
+                                         HorizontalAlignment="Center"
+                                         VerticalAlignment="Center"/>
+                            </Grid>
+                        </VisualBrush.Visual>
+                    </VisualBrush>
+                </Border.Background>
+            </Border>
+        </Grid>
+
+        <Grid x:Name="MainContentGrid" Opacity="0">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="*"/>
+            </Grid.RowDefinitions>
+
+            <Border x:Name="HeaderBorder" Grid.Row="0" BorderBrush="#18FFFFFF" BorderThickness="0,0,0,1">
+                <Border.Background>
+                    <LinearGradientBrush StartPoint="0,0" EndPoint="0,1">
+                        <GradientStop Color="#22080812" Offset="0"/>
+                        <GradientStop Color="#08080810" Offset="0.55"/>
+                        <GradientStop Color="#00000000" Offset="1"/>
+                    </LinearGradientBrush>
+                </Border.Background>
+                <Grid Height="68" Margin="24,0,0,0">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="Auto"/>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="Auto"/>
+                    </Grid.ColumnDefinitions>
+
+                    <StackPanel Grid.Column="0" Orientation="Horizontal" VerticalAlignment="Center">
+                        <Border Width="40" Height="40" CornerRadius="12" Margin="0,0,14,0"
+                                BorderBrush="#608B6CFF" BorderThickness="1">
+                            <Border.Background>
+                                <LinearGradientBrush StartPoint="0,0" EndPoint="1,1">
+                                    <GradientStop Color="#8B6CFF" Offset="0"/>
+                                    <GradientStop Color="#2EE8D6" Offset="1"/>
+                                </LinearGradientBrush>
+                            </Border.Background>
+                            <TextBlock Text="LG" FontWeight="Bold" FontSize="16" Foreground="White"
+                                       HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                        </Border>
+                        <StackPanel VerticalAlignment="Center">
+                            <TextBlock Text="LeadGen" FontSize="18" FontWeight="Bold"
+                                       Foreground="{StaticResource TextPrimaryBrush}"/>
+                            <StackPanel Orientation="Horizontal" Margin="0,1,0,0">
+                                <TextBlock Text="Lead Intelligence" FontSize="10"
+                                           Foreground="{StaticResource TextSecondaryBrush}"/>
+                                <Border Style="{StaticResource StatusPill}" Margin="8,0,0,0" Padding="7,2">
+                                    <StackPanel Orientation="Horizontal">
+                                        <Ellipse Width="5" Height="5" Fill="{StaticResource SuccessBrush}" Margin="0,0,5,0"/>
+                                        <TextBlock Text="Online" FontSize="9" Foreground="{StaticResource SuccessBrush}"/>
+                                    </StackPanel>
+                                </Border>
+                            </StackPanel>
+                        </StackPanel>
+                    </StackPanel>
+
+                    <Border x:Name="NavContainer" Grid.Column="1" HorizontalAlignment="Center" VerticalAlignment="Center"
+                            Background="#0CFFFFFF" BorderBrush="#30252B3D" BorderThickness="1"
+                            CornerRadius="24" Padding="4"
+                            shell:WindowChrome.IsHitTestVisibleInChrome="True">
+                        <Grid>
+                            <Border x:Name="NavIndicator" Height="36" VerticalAlignment="Center"
+                                    HorizontalAlignment="Left" CornerRadius="22"
+                                    Background="{StaticResource NavActiveGlowBrush}"
+                                    BorderBrush="#808B6CFF" BorderThickness="1"
+                                    IsHitTestVisible="False" Width="100" Margin="0"
+                                    RenderTransformOrigin="0.5,0.5">
+                                <Border.RenderTransform>
+                                    <TranslateTransform X="0"/>
+                                </Border.RenderTransform>
+                            </Border>
+                            <StackPanel x:Name="NavStack" Orientation="Horizontal">
+                                <RadioButton x:Name="NavDashboard" Style="{StaticResource NavPillButton}" Content="Дашборд"
+                                             GroupName="Nav" Command="{Binding NavigateCommand}" CommandParameter="Dashboard">
+                                    <RadioButton.IsChecked>
+                                        <Binding Path="CurrentPage" Mode="OneWay"
+                                                 Converter="{StaticResource EnumEqualsConverter}" ConverterParameter="Dashboard"/>
+                                    </RadioButton.IsChecked>
+                                </RadioButton>
+                                <RadioButton x:Name="NavProcessing" Style="{StaticResource NavPillButton}" Content="Обработка"
+                                             GroupName="Nav" Command="{Binding NavigateCommand}" CommandParameter="Processing">
+                                    <RadioButton.IsChecked>
+                                        <Binding Path="CurrentPage" Mode="OneWay"
+                                                 Converter="{StaticResource EnumEqualsConverter}" ConverterParameter="Processing"/>
+                                    </RadioButton.IsChecked>
+                                </RadioButton>
+                                <RadioButton x:Name="NavLinks" Style="{StaticResource NavPillButton}" Content="Ссылки"
+                                             GroupName="Nav" Command="{Binding NavigateCommand}" CommandParameter="LinkGenerator">
+                                    <RadioButton.IsChecked>
+                                        <Binding Path="CurrentPage" Mode="OneWay"
+                                                 Converter="{StaticResource EnumEqualsConverter}" ConverterParameter="LinkGenerator"/>
+                                    </RadioButton.IsChecked>
+                                </RadioButton>
+                            </StackPanel>
+                        </Grid>
+                    </Border>
+
+                    <StackPanel Grid.Column="2" Orientation="Horizontal" VerticalAlignment="Top">
+                        <Border Style="{StaticResource StatusPill}" Margin="0,18,8,0" Padding="10,5" VerticalAlignment="Top">
+                            <TextBlock Text="v6.0" FontSize="10" Foreground="{StaticResource TextSecondaryBrush}"/>
+                        </Border>
+                        <ToggleButton x:Name="AnimationsToggle" Style="{StaticResource AnimationsToggleButton}"
+                                      IsChecked="{Binding AnimationsEnabled, Mode=TwoWay}"
+                                      Margin="0,18,8,0" VerticalAlignment="Top"
+                                      shell:WindowChrome.IsHitTestVisibleInChrome="True"
+                                      ToolTip="Анимации интерфейса"/>
+                        <Button Style="{StaticResource TitleBarButton}" Content="&#xE921;"
+                                Click="OnMinimizeClick"
+                                shell:WindowChrome.IsHitTestVisibleInChrome="True"
+                                ToolTip="Свернуть"/>
+                        <Button x:Name="MaximizeButton" Style="{StaticResource TitleBarButton}" Content="&#xE922;"
+                                Click="OnMaximizeClick"
+                                shell:WindowChrome.IsHitTestVisibleInChrome="True"
+                                ToolTip="Развернуть"/>
+                        <Button Style="{StaticResource TitleBarCloseButton}" Content="&#xE8BB;"
+                                Click="OnCloseClick"
+                                shell:WindowChrome.IsHitTestVisibleInChrome="True"
+                                ToolTip="Закрыть"/>
+                    </StackPanel>
+                </Grid>
+            </Border>
+
+            <controls:PageTransitionHost x:Name="PageHost" Grid.Row="1" Margin="32,20,32,28"
+                                         PageContent="{Binding CurrentViewModel}"/>
+        </Grid>
+
+        <controls:LoadingOverlay x:Name="LoadingOverlay"
+                                 Visibility="{Binding IsLoading, Converter={StaticResource BoolToVisibilityConverter}}"/>
+
+        <!-- Премиальное интро запуска -->
+        <controls:IntroOverlay x:Name="IntroOverlay" Panel.ZIndex="9999" Visibility="Visible"/>
+    </Grid>
+</Window>

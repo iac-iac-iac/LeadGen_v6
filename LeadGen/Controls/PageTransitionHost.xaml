@@ -1,0 +1,5 @@
+<UserControl x:Class="LeadGen.Controls.PageTransitionHost"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+    <ContentPresenter x:Name="ContentHost"/>
+</UserControl>
