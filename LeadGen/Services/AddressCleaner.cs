@@ -45,7 +45,15 @@ public static partial class AddressCleaner
 
         foreach (var part in parts)
         {
-            var normalized = NormalizeFragment(part);
+            var trimmed = part.Trim();
+
+            if (IsAddressDetail(trimmed))
+            {
+                kept.Add(trimmed);
+                continue;
+            }
+
+            var normalized = NormalizeFragment(trimmed);
             if (normalized is null)
                 continue;
 
@@ -54,9 +62,9 @@ public static partial class AddressCleaner
                 hasLocation = true;
                 kept.Add(normalized);
             }
-            else if (IsAddressDetail(part))
+            else if (hasLocation)
             {
-                kept.Add(part.Trim());
+                kept.Add(trimmed);
             }
         }
 
@@ -84,18 +92,18 @@ public static partial class AddressCleaner
         if (string.IsNullOrEmpty(text))
             return null;
 
-        if (RegionJunkRegex().IsMatch(text))
-            return null;
-
         var key = NormalizeKey(text);
         if (Aliases.TryGetValue(key, out var alias))
             return alias;
 
         foreach (var loc in AllowedLocations)
         {
-            if (key.Contains(NormalizeKey(loc), StringComparison.OrdinalIgnoreCase))
+            if (key == NormalizeKey(loc))
                 return loc;
         }
+
+        if (RegionJunkRegex().IsMatch(text))
+            return null;
 
         return text;
     }
@@ -115,6 +123,8 @@ public static partial class AddressCleaner
     [GeneratedRegex(@"(?:автономный\s+округ|автономная\s+область|\b(?:республика|область|край)\b)", RegexOptions.IgnoreCase)]
     private static partial Regex RegionJunkRegex();
 
-    [GeneratedRegex(@"(?i)\bул\.?\b|\bулиц|\bпросп|\bд\.?\s*\d|\bдом\s*\d|\bкв\.?\s*\d|\bмкр", RegexOptions.IgnoreCase)]
+    [GeneratedRegex(
+        @"(?i)\bул\.?\b|\bулиц|\bпросп|\bшоссе\b|\bш\.?\b|\bпер\.?\b|\bпереул|\bбульв|\bб-р\b|\bнаб\.?\b|\bпл\.?\b|\bплощад|\bаллея\b|\bлиния\b|\bмкр|\bмикрорайон\b|\bд\.?\s*\d|\bдом\s*\d|\bкв\.?\s*\d|\bкорп\.?\s*\d|\bстр\.?\s*\d|^\d+[а-яa-z]?$",
+        RegexOptions.IgnoreCase)]
     private static partial Regex AddressDetailRegex();
 }

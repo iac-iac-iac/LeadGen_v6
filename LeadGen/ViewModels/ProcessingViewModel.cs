@@ -145,7 +145,8 @@ public partial class ProcessingViewModel : ObservableObject
                 await UiDispatcher.RunOnUiThreadAsync(() =>
                 {
                     StatusMessage = $"Готово: {result.Leads.Count} лидов · {result.ProcessingTimeMs} мс · " +
-                                    $"удалено дублей: {result.DuplicatesRemoved} · без адреса: {result.RowsRemovedNoLocation}";
+                                    $"удалено дублей: {result.DuplicatesRemoved} · без адреса: {result.RowsRemovedNoLocation} · " +
+                                    $"исключ. категории: {result.RowsRemovedExcludedCategory}";
                     CanExport = result.Leads.Count > 0;
                 });
 

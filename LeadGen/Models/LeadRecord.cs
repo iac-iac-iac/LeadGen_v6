@@ -26,6 +26,7 @@ public class ProcessingResult
     public int DuplicatesByPhone { get; set; }
     public int DuplicatesByName { get; set; }
     public int RowsRemovedNoLocation { get; set; }
+    public int RowsRemovedExcludedCategory { get; set; }
     public long ProcessingTimeMs { get; set; }
 }
 

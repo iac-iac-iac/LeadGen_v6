@@ -31,10 +31,12 @@ public class LeadProcessingService
         var managerList = managers.Where(m => !string.IsNullOrWhiteSpace(m)).ToList();
         var allRows = new List<RawLeadRow>();
         var filesProcessed = 0;
+        var removedExcludedCategory = 0;
 
         foreach (var path in filePaths)
         {
-            var rows = LoadFile(path, settings);
+            var rows = LoadFile(path, settings, out var excludedInFile);
+            removedExcludedCategory += excludedInFile;
             if (rows is null)
                 continue;
 
@@ -104,25 +106,28 @@ public class LeadProcessingService
             DuplicatesByPhone = dupByPhone,
             DuplicatesByName = dupByName,
             RowsRemovedNoLocation = removedNoLocation,
+            RowsRemovedExcludedCategory = removedExcludedCategory,
             ProcessingTimeMs = sw.ElapsedMilliseconds
         };
     }
 
-    private List<RawLeadRow> LoadFile(string filepath, ProcessingSettings settings)
+    private List<RawLeadRow> LoadFile(string filepath, ProcessingSettings settings, out int excludedByCategory)
     {
+        excludedByCategory = 0;
         var ext = Path.GetExtension(filepath).ToLowerInvariant();
 
         return ext switch
         {
-            ".json" => LoadJson(filepath, settings) ?? [],
+            ".json" => LoadJson(filepath, settings, out excludedByCategory) ?? [],
             ".tsv" => LoadDelimited(filepath, '\t', settings),
             ".csv" => LoadDelimited(filepath, ',', settings),
             _ => []
         };
     }
 
-    private List<RawLeadRow>? LoadJson(string filepath, ProcessingSettings settings)
+    private List<RawLeadRow>? LoadJson(string filepath, ProcessingSettings settings, out int excludedByCategory)
     {
+        excludedByCategory = 0;
         var json = File.ReadAllText(filepath);
         using var doc = JsonDocument.Parse(json);
 
@@ -135,6 +140,12 @@ public class LeadProcessingService
             var dict = new Dictionary<string, string?>(StringComparer.OrdinalIgnoreCase);
             foreach (var prop in item.EnumerateObject())
                 dict[prop.Name] = prop.Value.ToString();
+
+            if (ExcludedCategories.ContainsExcludedCategory(dict))
+            {
+                excludedByCategory++;
+                continue;
+            }
 
             rows.Add(MapRow(dict, isJson: true, settings));
         }
